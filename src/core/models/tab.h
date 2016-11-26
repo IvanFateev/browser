@@ -26,6 +26,7 @@
 
 #include <QObject>
 #include <QUrl>
+#include <QColor>
 
 class Tab : public QObject
 {
@@ -40,6 +41,8 @@ class Tab : public QObject
     Q_PROPERTY(bool loading READ loading WRITE setLoading NOTIFY loadingChanged)
     Q_PROPERTY(unsigned int loadProgress READ loadProgress WRITE setLoadProgress NOTIFY loadProgressChanged)
     Q_PROPERTY(bool invalid READ invalid NOTIFY invalidChanged)
+    Q_PROPERTY(bool hasThemeColor READ hasThemeColor WRITE setHasThemeColor NOTIFY hasThemeColorChanged)
+    Q_PROPERTY(QColor themeColor READ themeColor WRITE setThemeColor NOTIFY themeColorChanged)
 public:
     explicit Tab(QObject *parent = nullptr, bool invalid = false);
 
@@ -70,6 +73,12 @@ public:
     unsigned int loadProgress() const;
     void setLoadProgress(unsigned int loadProgress);
 
+    bool hasThemeColor() const;
+    void setHasThemeColor(bool hasThemeColor);
+
+    QColor themeColor() const;
+    void setThemeColor(QColor themeColor);
+
     bool invalid() const;
 
 signals:
@@ -83,6 +92,8 @@ signals:
     void invalidChanged(bool invalid);
     void loadingChanged(bool loading);
     void loadProgressChanged(unsigned int loadProgress);
+    void hasThemeColorChanged(bool hasThemeColor);
+    void themeColorChanged(QColor themeColor);
 
     void goBack();
     void goForward();
@@ -102,6 +113,8 @@ private:
     bool m_canReload;
     bool m_loading;
     int m_loadProgress;
+    bool m_hasThemeColor;
+    QColor m_themeColor;
 
     bool m_invalid;
 };

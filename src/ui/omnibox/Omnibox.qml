@@ -24,7 +24,9 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.0
 import Fluid.Controls 1.0
+import Fluid.Core 1.0
 import Fluid.Material 1.0
 import dperini.regexweburl 1.0
 import core 1.0
@@ -40,16 +42,11 @@ Item {
     implicitWidth: 256
 
     Rectangle {
+        id: container
         anchors.fill: parent
 
-        layer.enabled: true
-        layer.effect: ElevationEffect {
-            elevation: 0
-            fullWidth: true
-            fullHeight: true
-        }
-
         radius: 2
+        color: Utils.lightDark(Material.background, "#eeeeee", "white")
 
         RowLayout {
             anchors {
@@ -66,7 +63,11 @@ Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
+                Material.foreground: "#212121"
+                Material.accent: Material.color(Material.Pink)
+
                 bottomPadding: Units.smallSpacing
+
                 background: Item {}
                 font.pixelSize: 14
                 readOnly: true
@@ -86,7 +87,7 @@ Item {
                     visible: showUrlField.editActive
 
                     bottomPadding: Units.smallSpacing
-                    background: Rectangle {}
+                    background: Rectangle { color: container.color }
                     font.pixelSize: 14
 
                     onAccepted: {
@@ -166,6 +167,10 @@ Item {
             onActiveChanged: {
                 showUrlField.editActive = false;
             }
+        }
+
+        Behavior on color {
+            ColorAnimation { duration: 100 }
         }
     }
 }
