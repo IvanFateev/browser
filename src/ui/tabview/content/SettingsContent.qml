@@ -249,4 +249,10 @@ TabContent {
         property: "title"
         value: "Settings"
     }
+
+    Binding {
+        target: content.tab
+        property: "hasThemeColor"
+        value: false
+    }
 }
