@@ -27,16 +27,14 @@
 #include <QObject>
 #include <QStandardPaths>
 
+#include "../global/paths.h"
+
 #include "startconfig.h"
 #include "searchconfig.h"
-<<<<<<< e738755cea07dcb93be91605a6bab4a62d702c10
-#include "../global/paths.h"
-=======
 #include "themeconfig.h"
 
 const QString APP_CONFIG_LOCATION = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/liri-browser/";
 const QString SETTINGS_FILENAME = APP_CONFIG_LOCATION + "settings.json";
->>>>>>> Add theme color setting
 
 class Settings : public QObject
 {

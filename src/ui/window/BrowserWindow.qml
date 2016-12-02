@@ -38,11 +38,29 @@ FluidWindow {
     property var root
     property WebProfile profile
     property bool incognito: profile.incognito
-    property url startUrl: incognito ? Settings.startConfig.incognitoStartUrl
-                                     : Settings.startConfig.primaryStartUrl
+    property url startUrl: {
+        if (incognito)
+            return Settings.startConfig.incognitoStartUrl;
+        else if (darkThemeActive)
+            return Settings.startConfig.darkStartUrl;
+        else
+            return Settings.startConfig.primaryStartUrl;
+    }
     property string searchUrl: Settings.searchConfig.searchUrl
     property bool openStartUrl: true
     property bool themeColorEnabled: Settings.themeConfig.themeColorEnabled
+    property bool darkThemeActive: {
+        if (Settings.themeConfig.darkThemeEnabled) {
+            // always on if startTime == endTime (e.g. 00:00 == 00:00)
+            var alwaysOn = (timeString(Settings.themeConfig.darkThemeStartTime)
+                            === timeString(Settings.themeConfig.darkThemeEndTime));
+            // dark theme active if either always on or current time in
+            // active time span configured in the settings
+            return alwaysOn || DarkThemeTimer.isActiveTime;
+        }
+        return false;
+    }
+
     property TabsModel tabsModel: TabsModel {}
     property DownloadsModel downloadsModel
 
@@ -58,6 +76,10 @@ FluidWindow {
         }
     }
 
+    function timeString(time) {
+        return Qt.formatTime(time, "HH:mm");
+    }
+
     function openRequest(request) {
         request.destination = NewViewRequest.NewViewInTab;
         tabController.openNewViewRequest(request);
@@ -69,6 +91,8 @@ FluidWindow {
     title: "%1 - Liri Browser %2".arg(tabController.tabsModel.empty ? "New window"
                                                                     : tabsModel.active.title || "New tab")
                                  .arg(incognito ? "(Private mode)" : "")
+
+    Material.theme: darkThemeActive || incognito ? Material.Dark : Material.Light
 
     Drawer {
         id: rightDrawer
@@ -94,11 +118,15 @@ FluidWindow {
         ToolBar {
             id: toolbarContainer
 
-            property color incognitoColor: "#212121"
+            property color incognitoColor: "#263238"
+            property color darkThemeColor: "#212121"
 
             property color backgroundColor: {
                 if (incognito) {
                     return incognitoColor;
+                }
+                else if (darkThemeActive) {
+                    return darkThemeColor
                 }
                 else if (!tabsModel.active.invalid && tabsModel.active.hasThemeColor && themeColorEnabled) {
                     return tabsModel.active.themeColor;
