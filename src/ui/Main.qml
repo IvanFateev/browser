@@ -24,6 +24,7 @@
 import QtQuick 2.7
 import SlimeEngine 0.2
 import core 1.0
+import QtWebEngine 1.4
 import "."
 
 QtObject {
@@ -90,6 +91,11 @@ QtObject {
     property Component webProfileComponent: Component {
         WebProfile {
             engine: webengine
+            on__EngineInstanceChanged: {
+                __engineInstance.profile.persistentCookiesPolicy = WebEngineProfile.AllowPersistentCookies;
+                __engineInstance.profile.storageName = "io.liri.browser.cookies";
+            }
+
             onDownloadRequested: {
                 // Accept download request, returns SlimeEngine Download item
                 var engineItem = request.accept();
