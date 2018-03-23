@@ -55,6 +55,18 @@ Item {
     property var contentItem
     property int tabType
 
+    function zoomIn() {
+        if (contentItem.webview) {
+            contentItem.webview.zoomFactor += 0.1;
+        }
+    }
+
+    function zoomOut() {
+        if (contentItem.webview) {
+            contentItem.webview.zoomFactor -= 0.1;
+        }
+    }
+
     function tryCreateContent() {
         if (contentItem || !loadContent || tab !== activeTab)
             return;

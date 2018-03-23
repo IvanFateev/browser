@@ -255,4 +255,22 @@ Item {
         }
     }
 
+    Shortcut {
+        autoRepeat: false
+        sequence: StandardKey.ZoomIn
+        onActivated: {
+            var page = tabController.pageByUID(tabsModel.activeIndex);
+            page.item.zoomIn();
+        }
+    }
+
+    Shortcut {
+        autoRepeat: false
+        sequence: StandardKey.ZoomOut
+        onActivated: {
+            var page = tabController.pageByUID(tabsModel.activeIndex);
+            page.item.zoomOut();
+        }
+    }
+
 }
